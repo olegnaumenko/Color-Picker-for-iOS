@@ -185,7 +185,9 @@
     [_initializeQueue setSuspended:YES];
     [_initializeQueue addOperationWithBlock:^{
         dispatch_async(dispatch_get_main_queue(), ^{
-            [self createColorMapLayer];
+            [self createColorMapLayerWithSize:self.frame.size
+                                     tileSize:self.tileSize.floatValue
+                                     satLimit:self.saturationUpperLimit.floatValue];
             
             [CATransaction begin];
             [CATransaction setValue:(id) kCFBooleanTrue
@@ -265,17 +267,17 @@
     _colorCursor.frame = cursorFrame;
 }
 
-- (void)createColorMapLayer {
+- (void)createColorMapLayerWithSize:(CGSize)size tileSize:(float)tileSize satLimit:(float)saturationUpperLimit {
     if (self.colorMapImage) {
         return;
     }
 
-    self.colorMapImage = [HRColorMapView colorMapImageWithSize:self.frame.size
-                                                      tileSize:self.tileSize.floatValue
-                                          saturationUpperLimit:self.saturationUpperLimit.floatValue];
+    self.colorMapImage = [HRColorMapView colorMapImageWithSize:size
+                                                      tileSize:tileSize
+                                          saturationUpperLimit:saturationUpperLimit];
 
-    self.backgroundImage = [HRColorMapView backgroundImageWithSize:self.frame.size
-                                                          tileSize:self.tileSize.floatValue];
+    self.backgroundImage = [HRColorMapView backgroundImageWithSize:size
+                                                          tileSize:tileSize];
 
 }
 
